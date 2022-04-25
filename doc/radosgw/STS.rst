@@ -92,20 +92,27 @@ STS Configuration
 
 The following configurable options have to be added for STS integration::
 
-  [client.radosgw.gateway]
+  [client.{your-rgw-name}]
   rgw sts key = {sts key for encrypting the session token}
   rgw s3 auth use sts = true
 
-Note: By default, STS and S3 APIs co-exist in the same namespace, and both S3
-and STS APIs can be accessed via the same endpoint in Ceph Object Gateway.
+Note:
+
+* By default, STS and S3 APIs co-exist in the same namespace, and both S3 and STS APIs can be accessed via the same endpoint in Ceph Object Gateway.
+* The ``rgw_sts_key`` is actually a hex string consisting of exaclty 16 characters
 
 Examples
 ========
 
-1. The following is an example of AssumeRole API call, which shows steps to create a role, assign a policy to it
-(that allows access to S3 resources), assuming a role to get temporary credentials and accessing s3 resources using
-those credentials. In this example, TESTER1 assumes a role created by TESTER, to access S3 resources owned by TESTER,
-according to the permission policy attached to the role.
+1. Assign ``roles`` and ``user-policy`` capabilities to the TESTER user: 
+
+      radosgw-admin caps add --uid="TESTER" --caps="user-policy=*;roles=*"
+
+2. The following is an example of AssumeRole API call, which shows steps to create a role, assign a policy to it
+   (that allows access to S3 resources), assuming a role to get temporary credentials and accessing s3 resources using
+   those credentials. In this example, TESTER1 assumes a role created by TESTER, to access S3 resources owned by TESTER,
+   according to the permission policy attached to the role.
+
 
 .. code-block:: python
 
